@@ -10,26 +10,19 @@ function random(range){
 
 $(document).ready(function(){
 
-  let h1;
-  let h2;
-  let p1;
-  let p2;
 
   $("#start").click(function(){
 
     let stringHeader1 = "&paragraphs="+1+"&words="+random(6);
-    let stringHeader2 = "&paragraphs="+1+"&words="+random(6);
-    let stringParagraph1 = "&paragraphs=" + random(3) + "&words="+random(100);
-    let stringParagraph2 = "&paragraphs=" + random(3) + "&words="+random(100);
+    // let stringHeader2 = "&paragraphs="+1+"&words="+random(6);
+    // let stringParagraph1 = "&paragraphs=" + random(3) + "&words="+random(100);
+    // let stringParagraph2 = "&paragraphs=" + random(3) + "&words="+random(100);
 
     function getDinos(string){
 
     let promise1 = new Promise(function(resolve, reject){
       let request = new XMLHttpRequest();
       let url = `http://dinoipsum.herokuapp.com/api/?format=json${string}`
-      // let urlH2 = `http://dinoipsum.herokuapp.com/api/?format=json${stringHeader2}`
-      // let urlP1 = `http://dinoipsum.herokuapp.com/api/?format=json${stringParagraph1}`
-      // let urlP2 = `http://dinoipsum.herokuapp.com/api/?format=json${stringParagraph2}`
 
       request.onload = function(){
         if (this.status === 200) {
@@ -42,21 +35,23 @@ $(document).ready(function(){
       request.send();
 
     });
-    let dinoResponse;
+    let dinoResponse= "";
     promise1.then(function(response){
-      let dinoResponse = JSON.parse(response);
-      console.log(dinoResponse);
-
+      let output = ""
+      dinoResponse = JSON.parse(response);
+      dinoResponse[0].forEach(function(dino){
+        output = output + dino + " ";
+      });
+      $("#header1").text(output)
     });
-    return dinoResponse;
+
   }
 
-  h1 = getDinos(stringHeader1);
-  h2 = getDinos(stringHeader2);
-  p1 = getDinos(stringParagraph1);
-  p2 = getDinos(stringParagraph2);
+  let h1 = getDinos(stringHeader1);
+  // let h2 = getDinos(stringHeader2);
+  // let p1 = getDinos(stringParagraph1);
+  // let p2 = getDinos(stringParagraph2);
 
-  console.log(h1)
 
   })
 
