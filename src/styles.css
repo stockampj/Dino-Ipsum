@@ -1,0 +1,13 @@
+body {
+  background-color: rgb(92, 138, 76);
+}
+
+.dinoProfile {
+  display: none;
+  float: left;
+  margin: 20px;
+}
+
+button {
+  float: right;
+}

@@ -2,6 +2,9 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+
 
 
 module.exports = {
@@ -12,14 +15,17 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   devServer: {
-    contentBase: './dist',
-    open: 'chrome'
+    contentBase: './dist'
   },
   plugins: [
+    new Dotenv(),
     new UglifyJsPlugin({ sourceMap: true }),
     new CleanWebpackPlugin(['dist']),
+    new CopyWebpackPlugin([
+      {from:'src/images',to:'images'}
+    ]),
     new HtmlWebpackPlugin({
-      title: 'My Project',
+      title: 'Project',
       template: './src/index.html',
       inject: 'body'
     })
@@ -51,6 +57,16 @@ module.exports = {
         options: {
           presets: ['es2015']
         }
+      },
+      {
+        test: /\.(png|jp(e*)g|svg)$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 8000, // Convert images < 8kb to base64 strings
+            name: 'images/[hash]-[name].[ext]'
+          }
+        }]
       }
     ]
   }
